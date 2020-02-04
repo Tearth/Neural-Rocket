@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CloudsManager : MonoBehaviour
 {
@@ -23,6 +21,11 @@ public class CloudsManager : MonoBehaviour
 
     private void Update()
     {
+        ProcessClouds();
+    }
+
+    private void ProcessClouds()
+    {
         foreach (Transform cloud in transform)
         {
             var fixedCameraPosition = new Vector3(MainCamera.transform.position.x, CloudsHeight, MainCamera.transform.position.z);
@@ -33,13 +36,13 @@ public class CloudsManager : MonoBehaviour
         }
     }
 
-    public void CreateCloud()
+    private void CreateCloud()
     {
         var cloud = Instantiate(CloudPrefab, RandomCloudPosition(true), Quaternion.identity, transform);
         cloud.name = $"Cloud {transform.childCount}";
     }
 
-    public void RegenerateCloud(GameObject cloud, bool allowNear)
+    private void RegenerateCloud(GameObject cloud, bool allowNear)
     {
         cloud.transform.position = RandomCloudPosition(allowNear);
     }

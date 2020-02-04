@@ -2,8 +2,10 @@
 
 public class AccelerationMeter : MonoBehaviour
 {
+    [Header("General")]
     public Rigidbody Target;
-    public Vector3 Acceleration = Vector3.zero;
+
+    public Vector3 Acceleration { get; internal set; }
     public Vector3 AccelerationWithGravity => Acceleration - Physics.gravity;
     public float GForce => AccelerationWithGravity.magnitude / Physics.gravity.magnitude;
 
@@ -14,7 +16,12 @@ public class AccelerationMeter : MonoBehaviour
         _lastVelocity = Target.velocity;
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
+    {
+        UpdateAcceleration();
+    }
+
+    private void UpdateAcceleration()
     {
         Acceleration = (Target.velocity - _lastVelocity) / Time.fixedDeltaTime;
         _lastVelocity = Target.velocity;
