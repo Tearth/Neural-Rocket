@@ -12,7 +12,7 @@ public class CameraEntity : MonoBehaviour
     public Color BaseSkyColor;
     public float BlackSkyHeight;
 
-    void Update()
+    private void Update()
     {
         UpdateSkyColor();
     }
