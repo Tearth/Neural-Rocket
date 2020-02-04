@@ -28,7 +28,11 @@ public class CloudsManager : MonoBehaviour
     {
         foreach (Transform cloud in transform)
         {
-            var fixedCameraPosition = new Vector3(MainCamera.transform.position.x, CloudsHeight, MainCamera.transform.position.z);
+            var fixedCameraPosition = new Vector3(
+                MainCamera.transform.position.x,
+                CloudsHeight,
+                MainCamera.transform.position.z);
+
             if (Vector3.Distance(fixedCameraPosition, cloud.position) > GenerationRadius)
             {
                 RegenerateCloud(cloud.gameObject, false);
@@ -51,6 +55,7 @@ public class CloudsManager : MonoBehaviour
     {
         var positionWithinCircle = allowNear ? Random.insideUnitCircle : Random.insideUnitCircle.normalized;
         var positionAtFixedHeight = positionWithinCircle * GenerationRadius;
+
         return new Vector3(
             positionAtFixedHeight.x + MainCamera.transform.position.x,
             CloudsHeight,

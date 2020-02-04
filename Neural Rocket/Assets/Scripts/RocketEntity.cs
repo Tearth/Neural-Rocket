@@ -9,5 +9,5 @@ public class RocketEntity : MonoBehaviour
 
     [Header("Control")]
     public float Thrust;
-    public float Gimbal;
+    public float MaxGimbal;
 }

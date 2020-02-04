@@ -58,7 +58,13 @@ public class UIEntity : MonoBehaviour
             var acceleration = CurrentRocket.AccelerationMeter.Acceleration.magnitude.ToString("0.0");
             var thrust = CurrentRocket.Thrust.ToString("0.0");
             var gForce = CurrentRocket.AccelerationMeter.GForce.ToString("0.0");
-            var gimbal = CurrentRocket.Gimbal.ToString("0.0");
+
+            var gimbalEulerAngles = CurrentRocket.CenterOfThrust.localRotation.eulerAngles;
+            var gimbalEulerAnglesAbsolute = new Vector2(
+                Mathf.Abs(gimbalEulerAngles.x),
+                Mathf.Abs(gimbalEulerAngles.z)
+            );
+            var gimbal = gimbalEulerAnglesAbsolute.magnitude.ToString("0.0");
 
             AltitudeText.text = string.Format(AltitudePattern, altitude);
             SpeedText.text = string.Format(SpeedPattern, speed);
