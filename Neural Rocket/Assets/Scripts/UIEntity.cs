@@ -11,8 +11,9 @@ public class UIEntity : MonoBehaviour
     public Text AltitudeText;
     public Text SpeedText;
     public Text AccelerationText;
-    public Text ThrustText;
     public Text GForceText;
+    public Text ThrustText;
+    public Text GimbalText;
 
     [Header("Update settings")]
     public float UpdateInterval;
@@ -20,8 +21,9 @@ public class UIEntity : MonoBehaviour
     private const string AltitudePattern = "Altitude: {0} m";
     private const string SpeedPattern = "Speed: {0} m/s";
     private const string AccelerationPattern = "Acceler: {0} m/s^2";
-    private const string ThrustPattern = "Thrust: {0} %";
     private const string GForcePattern = "G-force: {0} G";
+    private const string ThrustPattern = "Thrust: {0} %";
+    private const string GimbalPattern = "Gimbal: {0} °";
 
     private DateTime _lastUpdateTime;
 
@@ -54,13 +56,16 @@ public class UIEntity : MonoBehaviour
             var altitude = CurrentRocket.CenterOfThrust.transform.position.y.ToString("0.0");
             var speed = CurrentRocket.RocketRigidbody.velocity.magnitude.ToString("0.0");
             var acceleration = CurrentRocket.AccelerationMeter.Acceleration.magnitude.ToString("0.0");
+            var thrust = CurrentRocket.Thrust.ToString("0.0");
             var gForce = CurrentRocket.AccelerationMeter.GForce.ToString("0.0");
+            var gimbal = CurrentRocket.Gimbal.ToString("0.0");
 
             AltitudeText.text = string.Format(AltitudePattern, altitude);
             SpeedText.text = string.Format(SpeedPattern, speed);
             AccelerationText.text = string.Format(AccelerationPattern, acceleration);
-            ThrustText.text = string.Format(ThrustPattern, 100);
+            ThrustText.text = string.Format(ThrustPattern, thrust);
             GForceText.text = string.Format(GForcePattern, gForce);
+            GimbalText.text = string.Format(GimbalPattern, gimbal);
         }
     }
 }

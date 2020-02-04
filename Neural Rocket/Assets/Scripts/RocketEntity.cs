@@ -6,4 +6,8 @@ public class RocketEntity : MonoBehaviour
     public Rigidbody RocketRigidbody;
     public AccelerationMeter AccelerationMeter;
     public Transform CenterOfThrust;
+
+    [Header("Control")]
+    public float Thrust;
+    public float Gimbal;
 }
