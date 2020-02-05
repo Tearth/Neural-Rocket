@@ -5,6 +5,7 @@ public class CameraEntity : MonoBehaviour
 {
     [Header("General")]
     public Camera Camera;
+    public Transform CurrentRocket;
 
     [Header("Sky")]
     public Color BaseSkyColor;
