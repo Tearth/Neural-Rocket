@@ -204,6 +204,7 @@ MonoBehaviour:
   Payload: {fileID: 1472376515}
   DryMass: 50000
   ZeroDragHeight: 5000
+  OrbitalSpeed: 100
   ThrustPercentage: 100
   MaxThrustForce: 4000000
   MaxGimbal: 15

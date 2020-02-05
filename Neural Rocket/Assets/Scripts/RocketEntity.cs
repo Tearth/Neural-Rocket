@@ -10,6 +10,7 @@ public class RocketEntity : MonoBehaviour
     public Transform Payload;
     public float DryMass;
     public float ZeroDragHeight;
+    public float OrbitalSpeed;
 
     [Header("Control")]
     public float ThrustPercentage;
@@ -43,6 +44,7 @@ public class RocketEntity : MonoBehaviour
         UpdateDrag();
         ApplyThrustForce();
         ApplyPayloadDragForce();
+        ApplyAntiGravityForce();
     }
 
     private void UpdateMass()
@@ -75,5 +77,20 @@ public class RocketEntity : MonoBehaviour
         var powSpeed = Mathf.Pow(RocketRigidbody.velocity.magnitude, 2);
         var dragForce = RocketRigidbody.drag * PayloadDrag * attackDir * powSpeed;
         RocketRigidbody.AddForceAtPosition(dragForce, Payload.position);
+    }
+
+    private void ApplyAntiGravityForce()
+    {
+        var velocityWithoutVerticalPart = new Vector3(
+            RocketRigidbody.velocity.x,
+            0,
+            RocketRigidbody.velocity.z
+        );
+
+        var fixedVelocity = Mathf.Clamp(velocityWithoutVerticalPart.magnitude, 0, OrbitalSpeed);
+        var multiplier = fixedVelocity / OrbitalSpeed;
+        var antiGravityForce = -Physics.gravity * multiplier;
+
+        RocketRigidbody.AddForce(antiGravityForce, ForceMode.Acceleration);
     }
 }
