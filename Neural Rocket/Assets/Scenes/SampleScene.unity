@@ -179,7 +179,7 @@ Rigidbody:
   m_GameObject: {fileID: 5144881}
   serializedVersion: 2
   m_Mass: 300000
-  m_Drag: 0
+  m_Drag: 0.05
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -201,10 +201,13 @@ MonoBehaviour:
   RocketRigidbody: {fileID: 5144884}
   AccelerationMeter: {fileID: 5144883}
   CenterOfThrust: {fileID: 505143179}
-  DryMass: 0
+  Payload: {fileID: 1472376515}
+  DryMass: 50000
+  ZeroDragHeight: 5000
   ThrustPercentage: 100
-  MaxThrustForce: 4000000
+  MaxThrustForce: 8000000
   MaxGimbal: 15
+  PayloadDrag: 10000
 --- !u!1 &28967001
 GameObject:
   m_ObjectHideFlags: 0
@@ -1073,7 +1076,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 10000
+  far clip plane: 100000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -1139,7 +1142,7 @@ MonoBehaviour:
   XSpeed: 15
   YSpeed: 320
   ScrollSpeed: 25
-  YMinLimit: -20
+  YMinLimit: -80
   YMaxLimit: 80
   DistanceMin: 5
   DistanceMax: 150
@@ -1667,7 +1670,7 @@ Transform:
   m_GameObject: {fileID: 1524380006}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 1, z: 100}
+  m_LocalScale: {x: 10000, y: 1, z: 10000}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2

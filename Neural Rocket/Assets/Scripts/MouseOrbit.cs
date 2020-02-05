@@ -38,6 +38,7 @@ public class MouseOrbit : MonoBehaviour
             if (Input.GetMouseButton(1))
             {
                 Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
 
                 _x += Input.GetAxis("Mouse X") * XSpeed * Distance * 0.02f;
                 _y -= Input.GetAxis("Mouse Y") * YSpeed * 0.02f;
@@ -45,6 +46,7 @@ public class MouseOrbit : MonoBehaviour
             }
             else
             {
+                Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
             }
 
