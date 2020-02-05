@@ -14,6 +14,9 @@ public class UIEntity : MonoBehaviour
     public Text GForceText;
     public Text ThrustText;
     public Text GimbalText;
+    public Text MassText;
+    public Text FuelText;
+    public Text AngleOfAttackText;
 
     [Header("Update settings")]
     public float UpdateInterval;
@@ -24,6 +27,9 @@ public class UIEntity : MonoBehaviour
     private const string GForcePattern = "G-force: {0} G";
     private const string ThrustPattern = "Thrust: {0} %";
     private const string GimbalPattern = "Gimbal: {0} °";
+    private const string MassPattern = "Mass: {0} t";
+    private const string FuelPattern = "Fuel: {0} %";
+    private const string AngleOfAttackPattern = "AOA: {0} °";
 
     private DateTime _lastUpdateTime;
 
@@ -50,6 +56,9 @@ public class UIEntity : MonoBehaviour
             AccelerationText.text = string.Format(AccelerationPattern, "---");
             ThrustText.text = string.Format(ThrustPattern, "---");
             GForceText.text = string.Format(GForcePattern, "---");
+            MassText.text = string.Format(MassPattern, "---");
+            FuelText.text = string.Format(FuelPattern, "---");
+            AngleOfAttackText.text = string.Format(AngleOfAttackPattern, "---");
         }
         else
         {
@@ -66,12 +75,19 @@ public class UIEntity : MonoBehaviour
             );
             var gimbal = gimbalEulerAnglesAbsolute.magnitude.ToString("0.0");
 
+            var mass = (CurrentRocket.RocketRigidbody.mass / 1000).ToString("0.0");
+            var fuel = CurrentRocket.FuelPercentage.ToString("0.0");
+            var angleOfAttack = CurrentRocket.AngleOfAttack.ToString("0.0");
+
             AltitudeText.text = string.Format(AltitudePattern, altitude);
             SpeedText.text = string.Format(SpeedPattern, speed);
             AccelerationText.text = string.Format(AccelerationPattern, acceleration);
             ThrustText.text = string.Format(ThrustPattern, thrust);
             GForceText.text = string.Format(GForcePattern, gForce);
             GimbalText.text = string.Format(GimbalPattern, gimbal);
+            MassText.text = string.Format(MassPattern, mass);
+            FuelText.text = string.Format(FuelPattern, fuel);
+            AngleOfAttackText.text = string.Format(AngleOfAttackPattern, angleOfAttack);
         }
     }
 }
