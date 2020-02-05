@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class ExhaustEntity : MonoBehaviour
 {
@@ -14,7 +15,19 @@ public class ExhaustEntity : MonoBehaviour
 
     private void Update()
     {
-        var particles = ExhaustParticles.main;
-        particles.startSpeedMultiplier = _baseSpeed * Rocket.ThrustPercentage / 100;
+        if (Math.Abs(Rocket.ThrustPercentage) > float.Epsilon)
+        {
+            if (!ExhaustParticles.isPlaying)
+            {
+                ExhaustParticles.Play();
+            }
+
+            var particles = ExhaustParticles.main;
+            particles.startSpeedMultiplier = _baseSpeed * Rocket.ThrustPercentage / 100;
+        }
+        else
+        {
+            ExhaustParticles.Stop();
+        }
     }
 }
