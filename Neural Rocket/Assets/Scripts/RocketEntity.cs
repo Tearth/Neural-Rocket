@@ -19,6 +19,9 @@ public class RocketEntity : MonoBehaviour
     public float PayloadDrag;
     public float MaxFuelUsage;
 
+    [Header("Objectives")]
+    public float TargetAltitude;
+
     public float FuelPercentage => (RocketRigidbody.mass - DryMass) / (_initialMass - DryMass) * 100;
     public float AngleOfAttack => Vector3.Angle(transform.up, RocketRigidbody.velocity.normalized);
 
@@ -92,5 +95,21 @@ public class RocketEntity : MonoBehaviour
         var antiGravityForce = -Physics.gravity * multiplier;
 
         RocketRigidbody.AddForce(antiGravityForce, ForceMode.Acceleration);
+    }
+
+    public void SetGimbal(float x, float y)
+    {
+        var rotationX = MaxGimbal * x;
+        var rotationY = MaxGimbal * y;
+
+        CenterOfThrust.localEulerAngles = new Vector3(
+            rotationX,
+            CenterOfThrust.localEulerAngles.y,
+            rotationY);
+    }
+
+    public void SetThrust(float thrust)
+    {
+        ThrustPercentage = thrust * 50 + 50;
     }
 }
