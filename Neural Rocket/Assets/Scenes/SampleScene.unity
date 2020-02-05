@@ -205,9 +205,10 @@ MonoBehaviour:
   DryMass: 50000
   ZeroDragHeight: 5000
   ThrustPercentage: 100
-  MaxThrustForce: 8000000
+  MaxThrustForce: 4000000
   MaxGimbal: 15
   PayloadDrag: 10000
+  MaxFuelUsage: 100
 --- !u!1 &28967001
 GameObject:
   m_ObjectHideFlags: 0
