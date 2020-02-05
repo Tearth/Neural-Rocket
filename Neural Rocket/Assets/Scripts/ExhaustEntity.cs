@@ -15,6 +15,6 @@ public class ExhaustEntity : MonoBehaviour
     private void Update()
     {
         var particles = ExhaustParticles.main;
-        particles.startSpeedMultiplier = _baseSpeed * Rocket.Thrust / 100;
+        particles.startSpeedMultiplier = _baseSpeed * Rocket.ThrustPercentage / 100;
     }
 }

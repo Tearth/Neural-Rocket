@@ -56,7 +56,7 @@ public class UIEntity : MonoBehaviour
             var altitude = CurrentRocket.CenterOfThrust.transform.position.y.ToString("0.0");
             var speed = CurrentRocket.RocketRigidbody.velocity.magnitude.ToString("0.0");
             var acceleration = CurrentRocket.AccelerationMeter.Acceleration.magnitude.ToString("0.0");
-            var thrust = CurrentRocket.Thrust.ToString("0.0");
+            var thrust = CurrentRocket.ThrustPercentage.ToString("0.0");
             var gForce = CurrentRocket.AccelerationMeter.GForce.ToString("0.0");
 
             var gimbalEulerAngles = CurrentRocket.CenterOfThrust.localRotation.eulerAngles;

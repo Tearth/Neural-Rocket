@@ -200,7 +200,8 @@ MonoBehaviour:
   RocketRigidbody: {fileID: 5144884}
   AccelerationMeter: {fileID: 5144883}
   CenterOfThrust: {fileID: 505143179}
-  Thrust: 100
+  ThrustPercentage: 100
+  MaxThrustForce: 4000000
   MaxGimbal: 15
 --- !u!1 &28967001
 GameObject:
@@ -6295,7 +6296,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1789477009}
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []

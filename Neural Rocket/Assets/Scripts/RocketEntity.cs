@@ -8,6 +8,20 @@ public class RocketEntity : MonoBehaviour
     public Transform CenterOfThrust;
 
     [Header("Control")]
-    public float Thrust;
+    public float ThrustPercentage;
+    public float MaxThrustForce;
     public float MaxGimbal;
+
+    private void FixedUpdate()
+    {
+        ApplyThrustForce();
+    }
+
+    private void ApplyThrustForce()
+    {
+        var force = MaxThrustForce * ThrustPercentage / 100;
+        var forceRelativeToRotation = CenterOfThrust.up * force;
+
+        RocketRigidbody.AddForceAtPosition(forceRelativeToRotation, CenterOfThrust.position);
+    }
 }
