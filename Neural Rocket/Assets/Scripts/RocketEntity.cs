@@ -24,7 +24,7 @@ public class RocketEntity : MonoBehaviour
     public float TargetAltitude;
 
     public float FuelPercentage => (RocketRigidbody.mass - DryMass) / (_initialMass - DryMass) * 100;
-    public float AngleOfAttack => RocketRigidbody.velocity.magnitude < 5 ? 0 : Vector3.Angle(transform.up, RocketRigidbody.velocity.normalized);
+    public float AngleOfAttack => RocketRigidbody.velocity.magnitude < 5 ? 0 : Vector3.SignedAngle(transform.up, RocketRigidbody.velocity.normalized, Vector3.forward);
     public Vector3 AngleOfAttackVector => RocketRigidbody.velocity.magnitude < 5 ? Vector3.zero : transform.up - RocketRigidbody.velocity.normalized;
 
     private float _initialMass;

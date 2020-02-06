@@ -49,7 +49,7 @@ public class RocketAgent : Agent
         var heightReward = Mathf.Clamp((_maxHeight - 5000) / 5000f, -1, 1);
 
         // Rocket is on orbit
-        if (RocketEntity.transform.position.y > RocketEntity.ZeroDragHeight)
+        if (RocketEntity.transform.position.y >= RocketEntity.TargetAltitude)
         {
             if (RocketEntity.FuelPercentage <= 0)
             {
