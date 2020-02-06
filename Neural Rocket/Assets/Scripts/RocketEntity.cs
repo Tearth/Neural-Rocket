@@ -11,6 +11,7 @@ public class RocketEntity : MonoBehaviour
     public float DryMass;
     public float ZeroDragHeight;
     public float OrbitalSpeed;
+    public bool Destroyed;
 
     [Header("Control")]
     public float ThrustPercentage;
@@ -23,7 +24,8 @@ public class RocketEntity : MonoBehaviour
     public float TargetAltitude;
 
     public float FuelPercentage => (RocketRigidbody.mass - DryMass) / (_initialMass - DryMass) * 100;
-    public float AngleOfAttack => Vector3.Angle(transform.up, RocketRigidbody.velocity.normalized);
+    public float AngleOfAttack => RocketRigidbody.velocity.magnitude < 5 ? 0 : Vector3.Angle(transform.up, RocketRigidbody.velocity.normalized);
+    public Vector3 AngleOfAttackVector => RocketRigidbody.velocity.magnitude < 5 ? Vector3.zero : transform.up - RocketRigidbody.velocity.normalized;
 
     private float _initialMass;
     private float _initialDrag;
@@ -48,6 +50,14 @@ public class RocketEntity : MonoBehaviour
         ApplyThrustForce();
         ApplyPayloadDragForce();
         ApplyAntiGravityForce();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.name == "Ground")
+        {
+            Destroyed = true;
+        }
     }
 
     private void UpdateMass()
@@ -101,6 +111,8 @@ public class RocketEntity : MonoBehaviour
     {
         var rotationX = MaxGimbal * x;
         var rotationY = MaxGimbal * y;
+
+        // Debug.Log($"R: {rotationX}, {rotationY}");
 
         CenterOfThrust.localEulerAngles = new Vector3(
             rotationX,

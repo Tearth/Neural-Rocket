@@ -186,7 +186,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 32
   m_CollisionDetection: 0
 --- !u!114 &5144885
 MonoBehaviour:
@@ -207,8 +207,9 @@ MonoBehaviour:
   DryMass: 50000
   ZeroDragHeight: 5000
   OrbitalSpeed: 1000
+  Destroyed: 0
   ThrustPercentage: 100
-  MaxThrustForce: 4000000
+  MaxThrustForce: 7000000
   MaxGimbal: 15
   PayloadDrag: 10000
   MaxFuelUsage: 100
@@ -229,7 +230,7 @@ MonoBehaviour:
     maxStep: 0
     resetOnDone: 1
     onDemandDecision: 0
-    numberOfActionsBetweenDecisions: 1
+    numberOfActionsBetweenDecisions: 10
   RocketEntity: {fileID: 5144885}
 --- !u!114 &5144887
 MonoBehaviour:
@@ -244,15 +245,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    vectorObservationSize: 1
+    vectorObservationSize: 6
     numStackedVectorObservations: 1
-    vectorActionSize: 01000000
+    vectorActionSize: 03000000
     vectorActionDescriptions: []
-    vectorActionSpaceType: 0
+    vectorActionSpaceType: 1
   m_Model: {fileID: 0}
   m_InferenceDevice: 0
   m_BehaviorType: 0
-  m_BehaviorName: My Behavior
+  m_BehaviorName: Rocket Behavior
   m_TeamID: 0
   m_useChildSensors: 1
 --- !u!1 &28967001
@@ -1655,10 +1656,10 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1524380006}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 3
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &1524380009

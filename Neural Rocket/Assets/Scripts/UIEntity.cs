@@ -70,11 +70,11 @@ public class UIEntity : MonoBehaviour
 
             var gimbalEulerAngles = CurrentRocket.CenterOfThrust.localRotation.eulerAngles;
             var gimbalEulerAnglesAbsolute = new Vector2(
-                Mathf.Abs(gimbalEulerAngles.x),
-                Mathf.Abs(gimbalEulerAngles.z)
+                gimbalEulerAngles.x < 180 ? gimbalEulerAngles.x : 360 - gimbalEulerAngles.x,
+                gimbalEulerAngles.z < 180 ? gimbalEulerAngles.z : 360 - gimbalEulerAngles.z
             );
             var gimbal = gimbalEulerAnglesAbsolute.magnitude.ToString("0.0");
-
+            
             var mass = (CurrentRocket.RocketRigidbody.mass / 1000).ToString("0.0");
             var fuel = CurrentRocket.FuelPercentage.ToString("0.0");
             var angleOfAttack = CurrentRocket.AngleOfAttack.ToString("0.0");
