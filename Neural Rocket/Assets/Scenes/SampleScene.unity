@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 5144885}
   - component: {fileID: 5144887}
   - component: {fileID: 5144886}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rocket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -150,7 +150,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5144881}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -47.228127, y: 5.1429844, z: -186.01509}
+  m_LocalPosition: {x: -47.228127, y: 4.2, z: -186.01509}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1523310105}
@@ -186,7 +186,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 32
+  m_Constraints: 48
   m_CollisionDetection: 0
 --- !u!114 &5144885
 MonoBehaviour:
@@ -211,8 +211,8 @@ MonoBehaviour:
   ThrustPercentage: 100
   MaxThrustForce: 7000000
   MaxGimbal: 15
-  PayloadDrag: 10000
-  MaxFuelUsage: 100
+  PayloadDrag: 2000
+  MaxFuelUsage: 150
   TargetAltitude: 6000
 --- !u!114 &5144886
 MonoBehaviour:
@@ -245,9 +245,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    vectorObservationSize: 6
+    vectorObservationSize: 3
     numStackedVectorObservations: 1
-    vectorActionSize: 03000000
+    vectorActionSize: 02000000
     vectorActionDescriptions: []
     vectorActionSpaceType: 1
   m_Model: {fileID: 0}
@@ -544,7 +544,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 505143179}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Center Of Thrust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1441,7 +1441,7 @@ GameObject:
   - component: {fileID: 1472376518}
   - component: {fileID: 1472376517}
   - component: {fileID: 1472376516}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Payload
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1534,7 +1534,7 @@ GameObject:
   - component: {fileID: 1523310108}
   - component: {fileID: 1523310107}
   - component: {fileID: 1523310106}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1921,7 +1921,7 @@ GameObject:
   - component: {fileID: 1789477011}
   - component: {fileID: 1789477010}
   - component: {fileID: 1789477013}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Exhaust Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6893,6 +6893,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f6f3145e81a49f4bb239384d2c632cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RocketTarget: {fileID: 5144881}
+  Launchpad: {fileID: 1857350727}
+  AgentsCount: 16
+  SpaceBetweenAgents: 200
+  AgentsInRow: 4
 --- !u!4 &2047193794
 Transform:
   m_ObjectHideFlags: 0
