@@ -1,7 +1,5 @@
-﻿using System;
-using MLAgents;
+﻿using MLAgents;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class RocketAgent : Agent
 {
@@ -23,54 +21,48 @@ public class RocketAgent : Agent
 
     public override void CollectObservations()
     {
-        // var velocityNormalized = NormalizeVector(RocketEntity.RocketRigidbody.velocity, 0, RocketEntity.OrbitalSpeed * 2);
-        var test = RocketEntity.RocketRigidbody.rotation.eulerAngles;
-        var test2 = new Vector3(
-            test.x < 180 ? test.x : test.x - 360,
-            test.y < 180 ? test.y : test.y - 360,
-            test.z < 180 ? test.z : test.z - 360
-            );
-        var rotationNormalized = NormalizeVector(test2, -180, 180);
-        //Debug.Log(rotationNormalized);
-        var angleOfAttackNormalized = RocketEntity.AngleOfAttackVector;
-        // Debug.Log(angleOfAttackNormalized);
-        // var altitudeNormalized = NormalizeValue(RocketEntity.transform.position.y, 0, RocketEntity.TargetAltitude * 2);
+        var altitudeNormalized = NormalizeValue(RocketEntity.transform.position.y, 0, 10000);
+        AddVectorObs(altitudeNormalized);
 
-        // AddVectorObs(velocityNormalized);
-        AddVectorObs(rotationNormalized);
+        var rotation = RocketEntity.RocketRigidbody.rotation.eulerAngles;
+        var normalizedRotation = new Vector3(
+            rotation.x < 180 ? rotation.x : rotation.x - 360,
+            rotation.y < 180 ? rotation.y : rotation.y - 360,
+            rotation.z < 180 ? rotation.z : rotation.z - 360
+        );
+        var xRotationNormalized = NormalizeValue(normalizedRotation.z, -180, 180);
+        AddVectorObs(xRotationNormalized);
+
+        var angleOfAttackNormalized = NormalizeValue(RocketEntity.AngleOfAttack, -90, 90);
         AddVectorObs(angleOfAttackNormalized);
-        // AddVectorObs(altitudeNormalized);
 
-        // Debug.Log($"NVelocity: {velocityNormalized}, NRotation: {rotationNormalized}, NAngleOfAttack: {angleOfAttackNormalized}, NAltitude: {altitudeNormalized}");
+        // Debug.Log($"Altitude: {altitudeNormalized}, XRotation: {xRotationNormalized}, AOANormalized: {angleOfAttackNormalized}");
     }
 
     public override void AgentAction(float[] vectorAction)
     {
-        RocketEntity.SetGimbal(vectorAction[0], vectorAction[1]);
-        //RocketEntity.SetThrust(vectorAction[2]);
-        RocketEntity.SetThrust(1);
+        RocketEntity.SetGimbal(vectorAction[0], 0);
+        RocketEntity.SetThrust(vectorAction[1]);
 
         _maxHeight = Mathf.Max(_maxHeight, RocketEntity.transform.position.y);
 
-        // Longer flight = better
-        //AddReward(0.1f);
+        var heightReward = Mathf.Clamp((_maxHeight - 5000) / 5000f, -1, 1);
 
-        //if (RocketEntity.AccelerationMeter.Acceleration.magnitude < 1)
-        //{
-        //    AddReward(-1);
-        //}
-
-        // Rocket hit the ground
-        var heightRes = _maxHeight / 1000f;
-        if (RocketEntity.FuelPercentage <= 0)
+        // Rocket is on orbit
+        if (RocketEntity.transform.position.y > RocketEntity.ZeroDragHeight)
         {
-            SetReward(heightRes);
-            Done();
+            if (RocketEntity.FuelPercentage <= 0)
+            {
+                var speedReward = RocketEntity.RocketRigidbody.velocity.x / RocketEntity.OrbitalSpeed;
+                SetReward(heightReward + speedReward);
+                Done();
+            }
         }
 
-        if (RocketEntity.AngleOfAttack > 20 || RocketEntity.Destroyed)
+        // Rocket is destroyed
+        if (Mathf.Abs(RocketEntity.AngleOfAttack) >= 90 || RocketEntity.RocketRigidbody.velocity.y < -5 || RocketEntity.Destroyed)
         {
-            SetReward(heightRes / 2 - 1);
+            SetReward(heightReward);
             Done();
         }
     }
@@ -81,7 +73,7 @@ public class RocketAgent : Agent
          RocketEntity.transform.rotation = _initialRotation;
          RocketEntity.RocketRigidbody.velocity = Vector3.zero;
          RocketEntity.RocketRigidbody.angularVelocity = Vector3.zero;
-         RocketEntity.RocketRigidbody.mass = _initialMass * Random.Range(0.5f, 1);
+         RocketEntity.RocketRigidbody.mass = _initialMass;
          RocketEntity.Destroyed = false;
 
          _maxHeight = RocketEntity.transform.position.y;
@@ -90,7 +82,6 @@ public class RocketAgent : Agent
     public override float[] Heuristic()
     {
         var gimbalX = 0.0f;
-        var gimbalY = 0.0f;
         var thrust = -1.0f;
 
         if (Input.GetKey(KeyCode.A))
@@ -103,16 +94,6 @@ public class RocketAgent : Agent
             gimbalX = 1;
         }
 
-        if (Input.GetKey(KeyCode.W))
-        {
-            gimbalY = 1;
-        }
-
-        if (Input.GetKey(KeyCode.S))
-        {
-            gimbalY = -1;
-        }
-
         if (Input.GetKey(KeyCode.LeftShift))
         {
             thrust = 1;
@@ -121,7 +102,6 @@ public class RocketAgent : Agent
         return new []
         {
             gimbalX,
-            gimbalY,
             thrust
         };
     }
