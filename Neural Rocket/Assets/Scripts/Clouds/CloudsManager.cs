@@ -35,7 +35,6 @@ public class CloudsManager : MonoBehaviour
 
             if (Vector3.Distance(fixedCameraPosition, cloud.position) > GenerationRadius)
             {
-                // RegenerateCloud(cloud.gameObject, false);
                 RegenerateCloud(cloud.gameObject, true);
             }
         }

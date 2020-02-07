@@ -5,11 +5,10 @@ public class CameraEntity : MonoBehaviour
 {
     [Header("General")]
     public Camera Camera;
-    public Transform CurrentRocket;
+    public WorldParams WorldParams;
 
     [Header("Sky")]
     public Color BaseSkyColor;
-    public float BlackSkyHeight;
 
     private void Update()
     {
@@ -18,8 +17,8 @@ public class CameraEntity : MonoBehaviour
 
     private void UpdateSkyColor()
     {
-        var fixedHeight = Mathf.Clamp(transform.position.y, 0, BlackSkyHeight);
-        var multiplier = Math.Abs(fixedHeight) < float.Epsilon ? 1 : 1 - fixedHeight / BlackSkyHeight;
+        var fixedHeight = Mathf.Clamp(transform.position.y, 0, WorldParams.ZeroDragAltitude);
+        var multiplier = Math.Abs(fixedHeight) < float.Epsilon ? 1 : 1 - fixedHeight / WorldParams.ZeroDragAltitude;
 
         Camera.backgroundColor = BaseSkyColor * multiplier;
     }

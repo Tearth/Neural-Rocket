@@ -150,14 +150,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5144881}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -47.228127, y: 4.2, z: -186.01509}
+  m_LocalPosition: {x: 0, y: 30.457016, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1523310105}
   - {fileID: 505143179}
   - {fileID: 1472376515}
-  m_Father: {fileID: 2047193794}
-  m_RootOrder: 4
+  m_Father: {fileID: 100146043}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5144883
 MonoBehaviour:
@@ -206,10 +206,8 @@ MonoBehaviour:
   Payload: {fileID: 1472376515}
   WorldParams: {fileID: 11400000, guid: 818ffff012cac4f4097d880fdc8ccf93, type: 2}
   RocketParams: {fileID: 11400000, guid: 6405221374370264ba9a070ace4c3bfa, type: 2}
-  DryMass: 50000
   Destroyed: 0
   ThrustPercentage: 100
-  MaxOperationalAltitude: 0
 --- !u!114 &5144886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,6 +342,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 28967001}
   m_CullTransparentMesh: 0
+--- !u!1 &100146042
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 100146043}
+  m_Layer: 0
+  m_Name: Launch Complex 0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &100146043
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100146042}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -14.067543, y: -55.349064, z: 17.792435}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 5144882}
+  - {fileID: 1857350731}
+  m_Father: {fileID: 2032284698}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &387972118
 GameObject:
   m_ObjectHideFlags: 0
@@ -854,7 +884,7 @@ RectTransform:
   - {fileID: 1572849997}
   - {fileID: 1898273790}
   m_Father: {fileID: 2047193794}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1063,11 +1093,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 877643584}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -47.228127, y: -26.257015, z: -186.01509}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2047193794}
-  m_RootOrder: 7
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &963194225
 GameObject:
@@ -1148,7 +1178,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -47.228127, y: 11.242985, z: -282.9151}
+  m_LocalPosition: {x: -0, y: 35, z: -97}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2047193794}
@@ -1167,9 +1197,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Camera: {fileID: 963194227}
-  CurrentRocket: {fileID: 5144882}
+  WorldParams: {fileID: 11400000, guid: 818ffff012cac4f4097d880fdc8ccf93, type: 2}
   BaseSkyColor: {r: 0, g: 0.28991652, b: 1, a: 0}
-  BlackSkyHeight: 5000
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1714,7 +1743,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1524380006}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -47.228127, y: -26.257015, z: -186.01509}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 10000, y: 1, z: 10000}
   m_Children: []
   m_Father: {fileID: 2047193794}
@@ -6762,11 +6791,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1857350727}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -47.228127, y: -23.757015, z: -186.01509}
+  m_LocalPosition: {x: 0, y: 2.5, z: 0}
   m_LocalScale: {x: 50, y: 5, z: 50}
   m_Children: []
-  m_Father: {fileID: 2047193794}
-  m_RootOrder: 5
+  m_Father: {fileID: 100146043}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1898273789
 GameObject:
@@ -6861,6 +6890,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1898273789}
   m_CullTransparentMesh: 0
+--- !u!1 &2032284696
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2032284698}
+  - component: {fileID: 2032284697}
+  m_Layer: 0
+  m_Name: Launch Complexes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2032284697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2032284696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf114469be610ef4b81e637c4b4b5f5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LaunchComplex: {fileID: 100146042}
+  AgentsCount: 16
+  SpaceBetweenAgents: 200
+  AgentsInRow: 4
+--- !u!4 &2032284698
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2032284696}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 61.29567, y: 81.60608, z: 168.22266}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 100146043}
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2047193792
 GameObject:
   m_ObjectHideFlags: 0
@@ -6890,11 +6967,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f6f3145e81a49f4bb239384d2c632cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RocketTarget: {fileID: 5144881}
-  Launchpad: {fileID: 1857350727}
-  AgentsCount: 16
-  SpaceBetweenAgents: 200
-  AgentsInRow: 4
 --- !u!4 &2047193794
 Transform:
   m_ObjectHideFlags: 0
@@ -6910,8 +6982,6 @@ Transform:
   - {fileID: 705507995}
   - {fileID: 1524380011}
   - {fileID: 1206283662}
-  - {fileID: 5144882}
-  - {fileID: 1857350731}
   - {fileID: 809599962}
   - {fileID: 877643587}
   m_Father: {fileID: 0}

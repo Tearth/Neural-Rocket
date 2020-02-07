@@ -15,6 +15,11 @@ public class ExhaustEntity : MonoBehaviour
 
     private void Update()
     {
+        ManageExhaustLength();
+    }
+
+    private void ManageExhaustLength()
+    {
         if (Math.Abs(Rocket.ThrustPercentage) > float.Epsilon)
         {
             if (!ExhaustParticles.isPlaying)

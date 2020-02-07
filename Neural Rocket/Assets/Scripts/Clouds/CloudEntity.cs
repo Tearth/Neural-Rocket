@@ -7,6 +7,11 @@ public class CloudEntity : MonoBehaviour
 
     private void Update()
     {
+        Move();
+    }
+
+    private void Move()
+    {
         transform.position += Speed;
     }
 }
