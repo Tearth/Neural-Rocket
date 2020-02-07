@@ -8,22 +8,14 @@ public class RocketEntity : MonoBehaviour
     public AccelerationMeter AccelerationMeter;
     public Transform CenterOfThrust;
     public Transform Payload;
-    public float DryMass;
-    public float ZeroDragHeight;
-    public float OrbitalSpeed;
+    public WorldParams WorldParams;
+    public RocketParams RocketParams;
     public bool Destroyed;
 
     [Header("Control")]
     public float ThrustPercentage;
-    public float MaxThrustForce;
-    public float MaxGimbal;
-    public float PayloadDrag;
-    public float MaxFuelUsage;
 
-    [Header("Objectives")]
-    public float TargetAltitude;
-
-    public float FuelPercentage => (RocketRigidbody.mass - DryMass) / (_initialMass - DryMass) * 100;
+    public float FuelPercentage => (RocketRigidbody.mass - RocketParams.DryMass) / (_initialMass - RocketParams.DryMass) * 100;
     public float AngleOfAttack => RocketRigidbody.velocity.magnitude < 5 ? 0 : Vector3.SignedAngle(transform.up, RocketRigidbody.velocity.normalized, Vector3.forward);
     public Vector3 AngleOfAttackVector => RocketRigidbody.velocity.magnitude < 5 ? Vector3.zero : transform.up - RocketRigidbody.velocity.normalized;
 
@@ -64,21 +56,21 @@ public class RocketEntity : MonoBehaviour
     {
         if (FuelPercentage > 0)
         {
-            RocketRigidbody.mass -= MaxFuelUsage * ThrustPercentage / 100;
+            RocketRigidbody.mass -= RocketParams.FuelUsage * ThrustPercentage / 100;
         }
     }
 
     private void UpdateDrag()
     {
-        var fixedHeight = Mathf.Clamp(transform.position.y, 0, ZeroDragHeight);
-        var multiplier = Math.Abs(fixedHeight) < float.Epsilon ? 1 : 1 - fixedHeight / ZeroDragHeight;
+        var fixedHeight = Mathf.Clamp(transform.position.y, 0, WorldParams.ZeroDragAltitude);
+        var multiplier = Math.Abs(fixedHeight) < float.Epsilon ? 1 : 1 - fixedHeight / WorldParams.ZeroDragAltitude;
         RocketRigidbody.drag = _initialDrag * multiplier;
         RocketRigidbody.angularDrag = _initialAngularDrag * multiplier;
     }
 
     private void ApplyThrustForce()
     {
-        var force = MaxThrustForce * ThrustPercentage / 100;
+        var force = RocketParams.MaxThrustForce * ThrustPercentage / 100;
         var forceRelativeToRotation = CenterOfThrust.up * force;
 
         RocketRigidbody.AddForceAtPosition(forceRelativeToRotation, CenterOfThrust.position);
@@ -88,7 +80,7 @@ public class RocketEntity : MonoBehaviour
     {
         var attackDir = transform.up - RocketRigidbody.velocity.normalized;
         var powSpeed = Mathf.Pow(RocketRigidbody.velocity.magnitude, 2);
-        var dragForce = RocketRigidbody.drag * PayloadDrag * attackDir * powSpeed;
+        var dragForce = RocketRigidbody.drag * RocketParams.PayloadDrag * attackDir * powSpeed;
         RocketRigidbody.AddForceAtPosition(dragForce, Payload.position);
     }
 
@@ -100,19 +92,17 @@ public class RocketEntity : MonoBehaviour
             RocketRigidbody.velocity.z
         );
 
-        var fixedVelocity = Mathf.Clamp(velocityWithoutVerticalPart.magnitude, 0, OrbitalSpeed);
-        var multiplier = fixedVelocity / OrbitalSpeed;
-        var antiGravityForce = -Physics.gravity * multiplier;
+        var fixedVelocity = Mathf.Clamp(velocityWithoutVerticalPart.magnitude, 0, WorldParams.OrbitalSpeed);
+        var multiplier = fixedVelocity / WorldParams.OrbitalSpeed;
+        var antiGravityForce = -WorldParams.Gravity * multiplier;
 
         RocketRigidbody.AddForce(antiGravityForce, ForceMode.Acceleration);
     }
 
     public void SetGimbal(float x, float y)
     {
-        var rotationX = MaxGimbal * x;
-        var rotationY = MaxGimbal * y;
-
-        // Debug.Log($"R: {rotationX}, {rotationY}");
+        var rotationX = RocketParams.MaxGimbal * x;
+        var rotationY = RocketParams.MaxGimbal * y;
 
         CenterOfThrust.localEulerAngles = new Vector3(
             rotationX,

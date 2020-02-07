@@ -204,16 +204,12 @@ MonoBehaviour:
   AccelerationMeter: {fileID: 5144883}
   CenterOfThrust: {fileID: 505143179}
   Payload: {fileID: 1472376515}
+  WorldParams: {fileID: 11400000, guid: 818ffff012cac4f4097d880fdc8ccf93, type: 2}
+  RocketParams: {fileID: 11400000, guid: 6405221374370264ba9a070ace4c3bfa, type: 2}
   DryMass: 50000
-  ZeroDragHeight: 5000
-  OrbitalSpeed: 1000
   Destroyed: 0
   ThrustPercentage: 100
-  MaxThrustForce: 7000000
-  MaxGimbal: 15
-  PayloadDrag: 2000
-  MaxFuelUsage: 150
-  TargetAltitude: 6000
+  MaxOperationalAltitude: 0
 --- !u!114 &5144886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,6 +228,7 @@ MonoBehaviour:
     onDemandDecision: 0
     numberOfActionsBetweenDecisions: 10
   RocketEntity: {fileID: 5144885}
+  TargetHeight: 0
 --- !u!114 &5144887
 MonoBehaviour:
   m_ObjectHideFlags: 0
