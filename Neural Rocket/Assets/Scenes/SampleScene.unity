@@ -226,7 +226,11 @@ MonoBehaviour:
     onDemandDecision: 0
     numberOfActionsBetweenDecisions: 10
   RocketEntity: {fileID: 5144885}
-  TargetHeight: 0
+  TargetAltitude: 0
+  TargetAltitudeTolerance: 500
+  TargetHorizontalSpeedTolerance: 100
+  AngleOfAttackTolerance: 15
+  MaxAngleOfAttack: 90
 --- !u!114 &5144887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,7 +244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    vectorObservationSize: 3
+    vectorObservationSize: 7
     numStackedVectorObservations: 1
     vectorActionSize: 02000000
     vectorActionDescriptions: []
@@ -1437,7 +1441,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MainCamera: {fileID: 963194227}
   CloudsCount: 200
-  CloudsHeight: 500
+  CloudsAltitude: 1000
   GenerationRadius: 4000
   CloudPrefab: {fileID: 3186259725194105929, guid: 1c096f458d573194bb98cd028bab5d04,
     type: 3}

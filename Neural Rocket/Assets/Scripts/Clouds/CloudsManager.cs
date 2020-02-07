@@ -7,7 +7,7 @@ public class CloudsManager : MonoBehaviour
     
     [Header("Clouds")]
     public int CloudsCount;
-    public float CloudsHeight;
+    public float CloudsAltitude;
     public float GenerationRadius;
     public GameObject CloudPrefab;
 
@@ -30,7 +30,7 @@ public class CloudsManager : MonoBehaviour
         {
             var fixedCameraPosition = new Vector3(
                 MainCamera.transform.position.x,
-                CloudsHeight,
+                CloudsAltitude,
                 MainCamera.transform.position.z);
 
             if (Vector3.Distance(fixedCameraPosition, cloud.position) > GenerationRadius)
@@ -54,12 +54,12 @@ public class CloudsManager : MonoBehaviour
     private Vector3 RandomCloudPosition(bool allowNear)
     {
         var positionWithinCircle = allowNear ? Random.insideUnitCircle : Random.insideUnitCircle.normalized;
-        var positionAtFixedHeight = positionWithinCircle * GenerationRadius;
+        var positionAtFixedAltitude = positionWithinCircle * GenerationRadius;
 
         return new Vector3(
-            positionAtFixedHeight.x + MainCamera.transform.position.x,
-            CloudsHeight,
-            positionAtFixedHeight.y + MainCamera.transform.position.z
+            positionAtFixedAltitude.x + MainCamera.transform.position.x,
+            CloudsAltitude,
+            positionAtFixedAltitude.y + MainCamera.transform.position.z
         );
     }
 }

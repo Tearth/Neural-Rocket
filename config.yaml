@@ -4,7 +4,7 @@ default:
     beta: 5.0e-3
     buffer_size: 10240
     epsilon: 0.2
-    hidden_units: 64
+    hidden_units: 128
     lambd: 0.95
     learning_rate: 1.0e-4
     learning_rate_schedule: linear

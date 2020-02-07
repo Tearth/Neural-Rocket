@@ -17,8 +17,8 @@ public class CameraEntity : MonoBehaviour
 
     private void UpdateSkyColor()
     {
-        var fixedHeight = Mathf.Clamp(transform.position.y, 0, WorldParams.ZeroDragAltitude);
-        var multiplier = Math.Abs(fixedHeight) < float.Epsilon ? 1 : 1 - fixedHeight / WorldParams.ZeroDragAltitude;
+        var fixedAltitude = Mathf.Clamp(transform.position.y, 0, WorldParams.ZeroDragAltitude);
+        var multiplier = Math.Abs(fixedAltitude) < float.Epsilon ? 1 : 1 - fixedAltitude / WorldParams.ZeroDragAltitude;
 
         Camera.backgroundColor = BaseSkyColor * multiplier;
     }

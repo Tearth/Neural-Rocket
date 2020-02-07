@@ -16,9 +16,9 @@ public class RocketEntity : MonoBehaviour
     public float ThrustPercentage;
 
     public float FuelPercentage => (RocketRigidbody.mass - RocketParams.DryMass) / (_initialMass - RocketParams.DryMass) * 100;
-    public float AngleOfAttack => RocketRigidbody.velocity.magnitude < 5 ? 0 : Vector3.SignedAngle(transform.up, RocketRigidbody.velocity.normalized, Vector3.forward);
-    public Vector3 AngleOfAttackVector => RocketRigidbody.velocity.magnitude < 5 ? Vector3.zero : transform.up - RocketRigidbody.velocity.normalized;
-
+    public float AngleOfAttack => RocketRigidbody.velocity.magnitude < 5 ? 0 :
+        Vector3.SignedAngle(transform.up, RocketRigidbody.velocity.normalized, Vector3.forward);
+    
     private float _initialMass;
     private float _initialDrag;
     private float _initialAngularDrag;
@@ -62,8 +62,8 @@ public class RocketEntity : MonoBehaviour
 
     private void UpdateDrag()
     {
-        var fixedHeight = Mathf.Clamp(transform.position.y, 0, WorldParams.ZeroDragAltitude);
-        var multiplier = Math.Abs(fixedHeight) < float.Epsilon ? 1 : 1 - fixedHeight / WorldParams.ZeroDragAltitude;
+        var fixedAltitude = Mathf.Clamp(transform.position.y, 0, WorldParams.ZeroDragAltitude);
+        var multiplier = Math.Abs(fixedAltitude) < float.Epsilon ? 1 : 1 - fixedAltitude / WorldParams.ZeroDragAltitude;
         RocketRigidbody.drag = _initialDrag * multiplier;
         RocketRigidbody.angularDrag = _initialAngularDrag * multiplier;
     }
