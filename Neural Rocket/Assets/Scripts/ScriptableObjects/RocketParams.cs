@@ -9,4 +9,5 @@ public class RocketParams : ScriptableObject
     public float PayloadDrag;
     public float FuelUsage;
     public float MaxOperationalAltitude;
+    public float MaxOperationalAcceleration;
 }

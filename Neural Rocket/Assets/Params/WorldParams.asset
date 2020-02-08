@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2760d873d35c05047aa32ed44d4be395, type: 3}
   m_Name: WorldParams
   m_EditorClassIdentifier: 
-  ZeroDragAltitude: 5000
-  OrbitalSpeed: 1000
+  ZeroDragAltitude: 10000
+  OrbitalSpeed: 3000

@@ -244,7 +244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    vectorObservationSize: 7
+    vectorObservationSize: 9
     numStackedVectorObservations: 1
     vectorActionSize: 02000000
     vectorActionDescriptions: []
@@ -6924,7 +6924,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LaunchComplex: {fileID: 100146042}
-  AgentsCount: 16
+  AgentsCount: 1
   SpaceBetweenAgents: 200
   AgentsInRow: 4
 --- !u!4 &2032284698

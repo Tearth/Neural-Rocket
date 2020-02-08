@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd62de91e42cf3f469d3707613a22f8d, type: 3}
   m_Name: RocketParams
   m_EditorClassIdentifier: 
-  DryMass: 50000
-  MaxThrustForce: 7000000
+  DryMass: 20000
+  MaxThrustForce: 4000000
   MaxGimbal: 15
-  PayloadDrag: 2000
-  FuelUsage: 150
-  MaxOperationalAltitude: 10000
+  PayloadDrag: 500
+  FuelUsage: 40
+  MaxOperationalAltitude: 20000
+  MaxOperationalAcceleration: 100
