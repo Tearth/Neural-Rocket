@@ -32,6 +32,8 @@ public class RocketAgent : Agent
          * I4 - y speed - from -OrbitalSpeed to OrbitalSpeed
          * I5 - x rotation - from -180 to 180 degrees
          * I6 - angle of attack - from -90 to 90 degrees
+         * I7 - x acceleration - from -MaxOperationalAcceleration to MaxOperationalAcceleration
+         * I8 - y acceleration - from -MaxOperationalAcceleration to MaxOperationalAcceleration
          */
 
         // I0
@@ -68,13 +70,24 @@ public class RocketAgent : Agent
         var angleOfAttackNormalized = NormalizeValue(RocketEntity.AngleOfAttack, -90, 90);
         AddVectorObs(angleOfAttackNormalized);
 
-        /*Debug.Log($"Altitude: {altitudeNormalized}, " +
+        // I7
+        var xAccelerationNormalized = NormalizeValue(RocketEntity.AccelerationMeter.Acceleration.x, -RocketEntity.RocketParams.MaxOperationalAcceleration, RocketEntity.RocketParams.MaxOperationalAcceleration);
+        AddVectorObs(xAccelerationNormalized);
+
+        // I8
+        var yAccelerationNormalized = NormalizeValue(RocketEntity.AccelerationMeter.Acceleration.y, -RocketEntity.RocketParams.MaxOperationalAcceleration, RocketEntity.RocketParams.MaxOperationalAcceleration);
+        AddVectorObs(yAccelerationNormalized);
+
+        /*
+        Debug.Log($"Altitude: {altitudeNormalized}, " +
                   $"TAltitude: {targetAltitudeNormalized}, " +
                   $"XSpeed: {xSpeedNormalized}, " +
                   $"XSpeedTarget: {xSpeedTargetNormalized}, " +
                   $"YSpeed: {ySpeedNormalized}, " +
                   $"XRotation: {xRotationNormalized}, " +
-                  $"AngleOfAttack: {angleOfAttackNormalized}");*/
+                  $"AngleOfAttack: {angleOfAttackNormalized}, " +
+                  $"XAcceleration: {xAccelerationNormalized}, " +
+                  $"YAcceleration: {yAccelerationNormalized}");*/
     }
 
     public override void AgentAction(float[] vectorAction)
