@@ -99,15 +99,14 @@ public class RocketEntity : MonoBehaviour
         RocketRigidbody.AddForce(antiGravityForce, ForceMode.Acceleration);
     }
 
-    public void SetGimbal(float x, float y)
+    public void SetGimbal(float z)
     {
-        var rotationX = RocketParams.MaxGimbal * x;
-        var rotationY = RocketParams.MaxGimbal * y;
+        var rotationZ = RocketParams.MaxGimbal * z;
 
         CenterOfThrust.localEulerAngles = new Vector3(
-            rotationX,
+            CenterOfThrust.localEulerAngles.x,
             CenterOfThrust.localEulerAngles.y,
-            rotationY);
+            rotationZ);
     }
 
     public void SetThrust(float thrust)

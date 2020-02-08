@@ -26,4 +26,9 @@ public class AccelerationMeter : MonoBehaviour
         Acceleration = (Target.velocity - _lastVelocity) / Time.fixedDeltaTime;
         _lastVelocity = Target.velocity;
     }
+
+    public void Reset()
+    {
+        _lastVelocity = Target.velocity;
+    }
 }
