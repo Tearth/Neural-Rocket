@@ -103,16 +103,16 @@ public class RocketAgent : Agent
         if (RocketEntity.transform.position.y < TargetAltitude - TargetAltitudeTolerance)
         {
             var angleRange = 20f;
-            var altitudeAngleRatio = Mathf.Clamp(RocketEntity.transform.position.y / TargetAltitude, 0, 1);
+            var altitudeAngleRatio = Mathf.Sqrt(Mathf.Clamp(RocketEntity.transform.position.y / TargetAltitude, 0, 1));
             var angleFrom = -90 * altitudeAngleRatio;
             var angleTo = angleFrom - angleRange;
 
             // Reward agent if rocket's rotation is within desired angle
             if (fixedRotationZ < angleFrom && fixedRotationZ > angleTo)
             {
-                if (thrustResponse >= 75)
+                if (thrustResponse >= 50)
                 {
-                    AddReward(0.2f);
+                    AddReward(0.3f);
                 }
             }
 
