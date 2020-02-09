@@ -227,10 +227,10 @@ MonoBehaviour:
     numberOfActionsBetweenDecisions: 5
   RocketEntity: {fileID: 5144885}
   TargetAltitude: 0
-  TargetAltitudeTolerance: 2000
+  TargetAltitudeTolerance: 1000
   TargetHorizontalSpeedTolerance: 200
-  TargetVerticalSpeedTolerance: 30
-  AngleOfAttackTolerance: 15
+  TargetVerticalSpeedTolerance: 10
+  AngleOfAttackTolerance: 10
   MaxAngleOfAttack: 90
 --- !u!114 &5144887
 MonoBehaviour:
