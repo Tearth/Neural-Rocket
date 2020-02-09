@@ -6,7 +6,7 @@ default:
     epsilon: 0.2
     hidden_units: 32
     lambd: 0.95
-    learning_rate: 3.0e-4
+    learning_rate: 5.0e-4
     learning_rate_schedule: linear
     max_steps: 5.0e5
     memory_size: 256
