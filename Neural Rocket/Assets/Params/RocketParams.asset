@@ -16,5 +16,5 @@ MonoBehaviour:
   MaxThrustForce: 5000000
   MaxGimbal: 15
   PayloadDrag: 500
-  FuelUsage: 60
+  FuelUsage: 50
   MaxOperationalAltitude: 20000
