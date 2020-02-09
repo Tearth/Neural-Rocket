@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: RocketParams
   m_EditorClassIdentifier: 
   DryMass: 20000
-  MaxThrustForce: 4000000
+  MaxThrustForce: 5000000
   MaxGimbal: 15
   PayloadDrag: 500
   FuelUsage: 40
   MaxOperationalAltitude: 20000
-  MaxOperationalAcceleration: 100

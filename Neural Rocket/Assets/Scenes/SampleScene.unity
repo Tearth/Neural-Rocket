@@ -149,7 +149,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5144881}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 30, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -224,11 +224,12 @@ MonoBehaviour:
     maxStep: 0
     resetOnDone: 1
     onDemandDecision: 0
-    numberOfActionsBetweenDecisions: 10
+    numberOfActionsBetweenDecisions: 5
   RocketEntity: {fileID: 5144885}
   TargetAltitude: 0
-  TargetAltitudeTolerance: 1000
+  TargetAltitudeTolerance: 2000
   TargetHorizontalSpeedTolerance: 200
+  TargetVerticalSpeedTolerance: 30
   AngleOfAttackTolerance: 15
   MaxAngleOfAttack: 90
 --- !u!114 &5144887
@@ -244,7 +245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    vectorObservationSize: 7
+    vectorObservationSize: 8
     numStackedVectorObservations: 1
     vectorActionSize: 02000000
     vectorActionDescriptions: []
@@ -6924,7 +6925,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LaunchComplex: {fileID: 100146042}
-  AgentsCount: 64
+  AgentsCount: 9
   SpaceBetweenAgents: 200
   AgentsInRow: 3
 --- !u!4 &2032284698

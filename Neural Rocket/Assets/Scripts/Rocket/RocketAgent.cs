@@ -1,5 +1,7 @@
-﻿using MLAgents;
+﻿using System;
+using MLAgents;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class RocketAgent : Agent
 {
@@ -7,6 +9,7 @@ public class RocketAgent : Agent
     public float TargetAltitude;
     public float TargetAltitudeTolerance;
     public float TargetHorizontalSpeedTolerance;
+    public float TargetVerticalSpeedTolerance;
     public float AngleOfAttackTolerance;
     public float MaxAngleOfAttack;
 
@@ -32,6 +35,7 @@ public class RocketAgent : Agent
          * I4 - y speed - from -OrbitalSpeed to OrbitalSpeed
          * I5 - z rotation - from -180 to 180 degrees
          * I6 - angle of attack - from -90 to 90 degrees
+         * I7 - z rotation speed - from -PI/2 to PI/2
          */
 
         // I0
@@ -65,122 +69,127 @@ public class RocketAgent : Agent
         AddVectorObs(zRotationNormalized);
 
         // I6
+        var zRotationSpeedNormalized = NormalizeValue(RocketEntity.RocketRigidbody.angularVelocity.z, (float)-Math.PI / 2, (float)Math.PI / 2);
+        AddVectorObs(zRotationSpeedNormalized);
+
+        // I7
         var angleOfAttackNormalized = NormalizeValue(RocketEntity.AngleOfAttack, -90, 90);
         AddVectorObs(angleOfAttackNormalized);
 
-        Debug.Log($"Altitude: {altitudeNormalized}, " +
-                  $"TAltitude: {targetAltitudeNormalized}, " +
-                  $"XSpeed: {xSpeedNormalized}, " +
-                  $"XSpeedTarget: {xSpeedTargetNormalized}, " +
-                  $"YSpeed: {ySpeedNormalized}, " +
-                  $"ZRotation: {zRotationNormalized}, " +
-                  $"AngleOfAttack: {angleOfAttackNormalized}");
+        /*Debug.Log($"Alt: {altitudeNormalized:0.000}, " +
+                  $"TAlt: {targetAltitudeNormalized:0.000}, " +
+                  $"XSpeed: {xSpeedNormalized:0.000}, " +
+                  $"XSpeedTarget: {xSpeedTargetNormalized:0.000}, " +
+                  $"YSpeed: {ySpeedNormalized:0.000}, " +
+                  $"ZRot: {zRotationNormalized:0.000}, " +
+                  $"ZRotSpeed: {zRotationSpeedNormalized:0.000}, " +
+                  $"AOA: {angleOfAttackNormalized:0.000}");*/
     }
 
     public override void AgentAction(float[] vectorAction)
     {
-        var altitudeIsValid = false;
-        var horizontalSpeedIsValid = false;
+        var fixedAngleOfAttack = RocketEntity.RocketRigidbody.velocity.magnitude > 5 ? RocketEntity.AngleOfAttack : 0;
+
+        var gimbalResponse = RocketEntity.RocketParams.MaxGimbal * vectorAction[0];
+        var thrustResponse = (vectorAction[1] + 1) * 50;
+
+        var rotation = RocketEntity.RocketRigidbody.rotation.eulerAngles;
+        var fixedRotationZ = rotation.z < 180 ? rotation.z : rotation.z - 360;
 
         RocketEntity.SetGimbal(vectorAction[0]);
         RocketEntity.SetThrust(vectorAction[1]);
 
-        // If rocket is below target altitude, then reward only if rocket is climbing
-        if (RocketEntity.transform.position.y < TargetAltitude - TargetAltitudeTolerance)
+        // If rocket is below half target altitude, then reward only if rocket is climbing
+        if (RocketEntity.transform.position.y < TargetAltitude / 2 - TargetAltitudeTolerance)
         {
-            if (RocketEntity.RocketRigidbody.velocity.y > 0)
+            // Rocket must be rotated within I quarter
+            if (fixedRotationZ < 0 && fixedRotationZ > -60)
             {
-                // Base reward
-                AddReward(0.1f);
-
-                // Altitude reward
-                AddReward(0.2f * (RocketEntity.transform.position.y / TargetAltitude));
+                if (thrustResponse >= 50)
+                {
+                    AddReward(0.2f);
+                }
             }
-            else
+
+            if (fixedRotationZ > 0 && gimbalResponse < 0 || fixedRotationZ < -60 && gimbalResponse > 0)
             {
-                AddReward(-0.3f);
+                AddReward(-0.2f);
             }
         }
-        // If rocket is at the target altitude, then reward agent
+        else if (RocketEntity.transform.position.y >= TargetAltitude / 2 - TargetAltitudeTolerance &&
+                 RocketEntity.transform.position.y < TargetAltitude - TargetAltitudeTolerance)
+        {
+            // Rocket must be rotated within I quarter
+            if (fixedRotationZ < -60 && fixedRotationZ > -90)
+            {
+                if (thrustResponse >= 25)
+                {
+                    AddReward(0.2f);
+                }
+            }
+
+            if (fixedRotationZ > -60 && gimbalResponse < 0 || fixedRotationZ < -90 && gimbalResponse > 0)
+            {
+                AddReward(-0.2f);
+            }
+        }
         else if (RocketEntity.transform.position.y >= TargetAltitude - TargetAltitudeTolerance &&
                  RocketEntity.transform.position.y <= TargetAltitude + TargetAltitudeTolerance)
         {
-            altitudeIsValid = true;
-            AddReward(0.5f);
-        }
-        // If rocket is above the target altitude, then punish agent
-        else
-        {
-            AddReward(-0.3f);
-        }
-
-        // If angle of attack is smaller than tolerance, then reward agent
-        if (Mathf.Abs(RocketEntity.AngleOfAttack) <= AngleOfAttackTolerance)
-        {
-            AddReward(0.1f);
-        }
-        // If angle of attack is larger than tolerance, then punish agent
-        else
-        {
-            AddReward(-0.3f);
-        }
-
-        // If rocket's horizontal speed is smaller than target, then reward only if rocket is accelerating in the valid direction
-        if (RocketEntity.RocketRigidbody.velocity.x < RocketEntity.WorldParams.OrbitalSpeed - TargetHorizontalSpeedTolerance)
-        {
-            if (RocketEntity.AccelerationMeter.Acceleration.x > 0)
+            if (RocketEntity.RocketRigidbody.velocity.x >= RocketEntity.WorldParams.OrbitalSpeed - TargetHorizontalSpeedTolerance &&
+                RocketEntity.RocketRigidbody.velocity.x <= RocketEntity.WorldParams.OrbitalSpeed + TargetHorizontalSpeedTolerance)
             {
-                // Base reward
-                AddReward(0.1f);
-
-                // Speed reward
-                AddReward(0.2f * (RocketEntity.RocketRigidbody.velocity.x / RocketEntity.WorldParams.OrbitalSpeed));
+                if (thrustResponse <= 10)
+                {
+                    AddReward(0.6f);
+                }
             }
             else
             {
-                AddReward(-0.3f);
+                if (RocketEntity.RocketRigidbody.velocity.y > TargetVerticalSpeedTolerance)
+                {
+                    if (fixedRotationZ < -120 && gimbalResponse > 0 || fixedRotationZ > -120 && gimbalResponse < 0)
+                    {
+                        AddReward(-0.3f);
+                    }
+                }
+                else if (RocketEntity.RocketRigidbody.velocity.y < -TargetVerticalSpeedTolerance)
+                {
+                    if (fixedRotationZ < -60 && gimbalResponse > 0 || fixedRotationZ > -60 && gimbalResponse < 0)
+                    {
+                        AddReward(-0.3f);
+                    }
+                }
+                else
+                {
+                    if (thrustResponse >= 25)
+                    {
+                        AddReward(0.4f);
+                    }
+                }
             }
         }
-        // If rocket's horizontal speed is at target, then reward agent
-        else if (RocketEntity.RocketRigidbody.velocity.x >= RocketEntity.WorldParams.OrbitalSpeed - TargetHorizontalSpeedTolerance &&
-                 RocketEntity.RocketRigidbody.velocity.x <= RocketEntity.WorldParams.OrbitalSpeed + TargetHorizontalSpeedTolerance)
-        {
-            horizontalSpeedIsValid = true;
-            AddReward(0.5f);
-        }
-        // If rocket is going too fast, then punish agent
         else
         {
-            AddReward(-0.3f);
-        }
-
-        //////////////// TEST
-        if (RocketEntity.transform.position.y < 1000)
-        {
-            if (RocketEntity.ThrustPercentage >= 80)
-            {
-                AddReward(0.1f);
-            }
-            else
-            {
-                AddReward(-1f);
-            }
-        }
-        ////////////////
-
-        // If rocket reached the specified altitude and speed, then mission is completed
-        if (altitudeIsValid && horizontalSpeedIsValid)
-        {
-            AddReward(1f);
             Done();
         }
 
-        // If rocket is destroyed, then stop whole episode
-        if (Mathf.Abs(RocketEntity.AngleOfAttack) >= MaxAngleOfAttack || RocketEntity.Destroyed)
+        // Reward if agent is trying to fix its rotation
+        if (Mathf.Abs(RocketEntity.AngleOfAttack) > AngleOfAttackTolerance)
         {
-            SetReward(-1f);
+            if (RocketEntity.AngleOfAttack > 0 && gimbalResponse > 0 || RocketEntity.AngleOfAttack < 0 && gimbalResponse < 0)
+            {
+                AddReward(-0.2f);
+            }
+        }
+
+        // Rocket is marked as destroyed, so end this episode
+        if (RocketEntity.Destroyed || fixedAngleOfAttack >= MaxAngleOfAttack)
+        {
             Done();
         }
+
+        // Debug.Log($"Reward: {GetReward()}");
     }
 
     public override void AgentReset()

@@ -16,8 +16,7 @@ public class RocketEntity : MonoBehaviour
     public float ThrustPercentage;
 
     public float FuelPercentage => (RocketRigidbody.mass - RocketParams.DryMass) / (_initialMass - RocketParams.DryMass) * 100;
-    public float AngleOfAttack => RocketRigidbody.velocity.magnitude < 5 ? 0 :
-        Vector3.SignedAngle(transform.up, RocketRigidbody.velocity.normalized, Vector3.forward);
+    public float AngleOfAttack => Vector3.SignedAngle(transform.up, RocketRigidbody.velocity.normalized, Vector3.forward);
     
     private float _initialMass;
     private float _initialDrag;
@@ -111,6 +110,6 @@ public class RocketEntity : MonoBehaviour
 
     public void SetThrust(float thrust)
     {
-        ThrustPercentage = thrust * 50 + 50;
+        ThrustPercentage = (thrust + 1) * 50;
     }
 }
