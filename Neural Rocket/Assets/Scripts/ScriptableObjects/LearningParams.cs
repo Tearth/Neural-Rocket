@@ -9,8 +9,6 @@ public class LearningParams : ScriptableObject
     public float AngleOfAttackTolerance;
     public float MaxAngleOfAttack;
     public float AngleRangeDuringAscending;
-    public float MinThrustDuringAscending;
     public float AngleRangeDuringStabilizing;
-    public float MinThrustDuringStabilizing;
-    public float MaxThrustAfterStabilization;
+    public int MillisecondsOnOrbitToFinish;
 }

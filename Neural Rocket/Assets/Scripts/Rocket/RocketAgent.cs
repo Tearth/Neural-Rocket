@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using MLAgents;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -12,9 +13,12 @@ public class RocketAgent : Agent
     private Vector3 _initialPosition;
     private Quaternion _initialRotation;
     private float _initialMass;
+    private Stopwatch _orbitTimer;
 
     public override void InitializeAgent()
     {
+        _orbitTimer = new Stopwatch();
+
         _initialPosition = RocketEntity.transform.position;
         _initialRotation = RocketEntity.transform.rotation;
         _initialMass = RocketEntity.RocketRigidbody.mass;
@@ -67,13 +71,13 @@ public class RocketAgent : Agent
         var angleOfAttackNormalized = NormalizeValue(RocketEntity.AngleOfAttack, -90, 90);
         AddVectorObs(angleOfAttackNormalized);
 
-        /*Debug.Log($"Alt: {altitudeNormalized:0.000}, " +
-                  $"TAlt: {targetAltitudeNormalized:0.000}, " +
-                  $"XSpeed: {xSpeedNormalized:0.000}, " +
-                  $"YSpeed: {ySpeedNormalized:0.000}, " +
-                  $"ZRot: {zRotationNormalized:0.000}, " +
-                  $"ZRotSpeed: {zRotationSpeedNormalized:0.000}, " +
-                  $"AOA: {angleOfAttackNormalized:0.000}");*/
+        /*UnityEngine.Debug.Log($"Alt: {altitudeNormalized:0.000}, " +
+                              $"TAlt: {targetAltitudeNormalized:0.000}, " +
+                              $"XSpeed: {xSpeedNormalized:0.000}, " +
+                              $"YSpeed: {ySpeedNormalized:0.000}, " +
+                              $"ZRot: {zRotationNormalized:0.000}, " +
+                              $"ZRotSpeed: {zRotationSpeedNormalized:0.000}, " +
+                              $"AOA: {angleOfAttackNormalized:0.000}");*/
     }
 
     public override void AgentAction(float[] vectorAction)
@@ -99,7 +103,7 @@ public class RocketAgent : Agent
             // Reward agent if rocket's rotation is within desired angle
             if (fixedRotationZ < angleFrom && fixedRotationZ > angleTo)
             {
-                if (thrustResponse >= LearningParams.MinThrustDuringAscending)
+                if (thrustResponse >= RocketEntity.RocketParams.MinThrustPercentage)
                 {
                     AddReward(0.3f);
                 }
@@ -108,6 +112,11 @@ public class RocketAgent : Agent
             else if (fixedRotationZ > angleFrom && gimbalResponse <= 0 || fixedRotationZ < angleTo && gimbalResponse >= 0)
             {
                 AddReward(-0.2f);
+            }
+
+            if (_orbitTimer.IsRunning)
+            {
+                _orbitTimer.Stop();
             }
         }
         // If rocket is within desired altitude range
@@ -141,7 +150,7 @@ public class RocketAgent : Agent
                 else
                 {
                     // Reward agent if thrust is throttled
-                    if (thrustResponse >= LearningParams.MinThrustDuringStabilizing)
+                    if (thrustResponse >= RocketEntity.RocketParams.MinThrustPercentage)
                     {
                         AddReward(0.4f);
                     }
@@ -152,14 +161,23 @@ public class RocketAgent : Agent
                      RocketEntity.RocketRigidbody.velocity.x <= RocketEntity.WorldParams.OrbitalSpeed + LearningParams.TargetHorizontalSpeedTolerance)
             {
                 // Reward agent if he stopped engine (because we don't need more speed)
-                if (thrustResponse <= LearningParams.MaxThrustAfterStabilization)
+                if (thrustResponse <= RocketEntity.RocketParams.MinThrustPercentage)
                 {
                     AddReward(0.6f);
-                    Done();
                 }
                 else
                 {
                     AddReward(-0.6f);
+                }
+
+                if (!_orbitTimer.IsRunning)
+                {
+                    _orbitTimer.Start();
+                }
+
+                if (_orbitTimer.Elapsed.TotalMilliseconds >= LearningParams.MillisecondsOnOrbitToFinish)
+                {
+                    Done();
                 }
             }
         }
@@ -190,11 +208,13 @@ public class RocketAgent : Agent
             Done();
         }
 
-        // Debug.Log($"Reward: {GetReward()}");
+        // UnityEngine.Debug.Log($"Reward: {GetReward()}");
     }
 
     public override void AgentReset()
     {
+        _orbitTimer.Reset();
+
         RocketEntity.transform.position = _initialPosition;
         RocketEntity.transform.rotation = _initialRotation;
         RocketEntity.RocketRigidbody.velocity = Vector3.zero;
