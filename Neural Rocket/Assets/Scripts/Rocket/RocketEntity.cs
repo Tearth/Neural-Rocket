@@ -31,11 +31,6 @@ public class RocketEntity : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (FuelPercentage <= 0)
-        {
-            ThrustPercentage = 0;
-        }
-
         UpdateMass();
         UpdateDrag();
         ApplyThrustForce();
@@ -110,6 +105,21 @@ public class RocketEntity : MonoBehaviour
 
     public void SetThrust(float thrust)
     {
-        ThrustPercentage = (thrust + 1) * 50;
+        if (FuelPercentage > 0)
+        {
+            var percentage = (thrust + 1) * 50;
+            if (percentage >= RocketParams.MinThrustPercentage)
+            {
+                ThrustPercentage = percentage;
+            }
+            else
+            {
+                ThrustPercentage = 0;
+            }
+        }
+        else
+        {
+            ThrustPercentage = 0;
+        }
     }
 }

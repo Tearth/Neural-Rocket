@@ -4,6 +4,7 @@
 public class RocketParams : ScriptableObject
 {
     public float DryMass;
+    public float MinThrustPercentage;
     public float MaxThrustForce;
     public float MaxGimbal;
     public float PayloadDrag;

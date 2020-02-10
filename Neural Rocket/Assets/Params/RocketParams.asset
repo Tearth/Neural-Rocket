@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: RocketParams
   m_EditorClassIdentifier: 
   DryMass: 20000
+  MinThrustPercentage: 70
   MaxThrustForce: 5000000
   MaxGimbal: 15
   PayloadDrag: 500
