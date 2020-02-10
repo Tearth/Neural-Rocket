@@ -236,6 +236,7 @@ MonoBehaviour:
   MinThrustDuringAscending: 50
   AngleRangeDuringStabilizing: 10
   MinThrustDuringStabilizing: 25
+  MaxThrustAfterStabilization: 25
 --- !u!114 &5144887
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -16,6 +16,7 @@ public class RocketAgent : Agent
     public float MinThrustDuringAscending;
     public float AngleRangeDuringStabilizing;
     public float MinThrustDuringStabilizing;
+    public float MaxThrustAfterStabilization;
 
     private Vector3 _initialPosition;
     private Quaternion _initialRotation;
@@ -87,12 +88,11 @@ public class RocketAgent : Agent
     public override void AgentAction(float[] vectorAction)
     {
         var fixedAngleOfAttack = RocketEntity.RocketRigidbody.velocity.magnitude > 5 ? RocketEntity.AngleOfAttack : 0;
+        var rotation = RocketEntity.RocketRigidbody.rotation.eulerAngles;
+        var fixedRotationZ = rotation.z < 180 ? rotation.z : rotation.z - 360;
 
         var gimbalResponse = RocketEntity.RocketParams.MaxGimbal * vectorAction[0];
         var thrustResponse = (vectorAction[1] + 1) * 50;
-
-        var rotation = RocketEntity.RocketRigidbody.rotation.eulerAngles;
-        var fixedRotationZ = rotation.z < 180 ? rotation.z : rotation.z - 360;
 
         RocketEntity.SetGimbal(vectorAction[0]);
         RocketEntity.SetThrust(vectorAction[1]);
@@ -161,7 +161,7 @@ public class RocketAgent : Agent
                      RocketEntity.RocketRigidbody.velocity.x <= RocketEntity.WorldParams.OrbitalSpeed + TargetHorizontalSpeedTolerance)
             {
                 // Reward agent if he stopped engine (because we don't need more speed)
-                if (thrustResponse <= 10)
+                if (thrustResponse <= MaxThrustAfterStabilization)
                 {
                     AddReward(0.6f);
                     Done();
