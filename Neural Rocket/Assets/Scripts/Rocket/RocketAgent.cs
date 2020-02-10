@@ -6,17 +6,8 @@ using Random = UnityEngine.Random;
 public class RocketAgent : Agent
 {
     public RocketEntity RocketEntity;
+    public LearningParams LearningParams;
     public float TargetAltitude;
-    public float TargetAltitudeTolerance;
-    public float TargetHorizontalSpeedTolerance;
-    public float TargetVerticalSpeedTolerance;
-    public float AngleOfAttackTolerance;
-    public float MaxAngleOfAttack;
-    public float AngleRangeDuringAscending;
-    public float MinThrustDuringAscending;
-    public float AngleRangeDuringStabilizing;
-    public float MinThrustDuringStabilizing;
-    public float MaxThrustAfterStabilization;
 
     private Vector3 _initialPosition;
     private Quaternion _initialRotation;
@@ -98,9 +89,9 @@ public class RocketAgent : Agent
         RocketEntity.SetThrust(vectorAction[1]);
 
         // If rocket is below half target altitude
-        if (RocketEntity.transform.position.y < TargetAltitude - TargetAltitudeTolerance)
+        if (RocketEntity.transform.position.y < TargetAltitude - LearningParams.TargetAltitudeTolerance)
         {
-            var angleRange = AngleRangeDuringAscending;
+            var angleRange = LearningParams.AngleRangeDuringAscending;
             var altitudeAngleRatio = Mathf.Sqrt(Mathf.Clamp(RocketEntity.transform.position.y / TargetAltitude, 0, 1 - angleRange / 90));
             var angleFrom = -90 * altitudeAngleRatio;
             var angleTo = angleFrom - angleRange;
@@ -108,7 +99,7 @@ public class RocketAgent : Agent
             // Reward agent if rocket's rotation is within desired angle
             if (fixedRotationZ < angleFrom && fixedRotationZ > angleTo)
             {
-                if (thrustResponse >= MinThrustDuringAscending)
+                if (thrustResponse >= LearningParams.MinThrustDuringAscending)
                 {
                     AddReward(0.3f);
                 }
@@ -120,18 +111,18 @@ public class RocketAgent : Agent
             }
         }
         // If rocket is within desired altitude range
-        else if (RocketEntity.transform.position.y >= TargetAltitude - TargetAltitudeTolerance &&
-                 RocketEntity.transform.position.y <= TargetAltitude + TargetAltitudeTolerance)
+        else if (RocketEntity.transform.position.y >= TargetAltitude - LearningParams.TargetAltitudeTolerance &&
+                 RocketEntity.transform.position.y <= TargetAltitude + LearningParams.TargetAltitudeTolerance)
         {
             // If rocket's speed is lower than desired
-            if (RocketEntity.RocketRigidbody.velocity.x < RocketEntity.WorldParams.OrbitalSpeed - TargetHorizontalSpeedTolerance)
+            if (RocketEntity.RocketRigidbody.velocity.x < RocketEntity.WorldParams.OrbitalSpeed - LearningParams.TargetHorizontalSpeedTolerance)
             {
-                var angleRange = AngleRangeDuringStabilizing;
+                var angleRange = LearningParams.AngleRangeDuringStabilizing;
                 var angleFrom = -90 + angleRange;
                 var angleTo = -90 - angleRange;
 
                 // If rocket is climbing faster than vertical speed tolerance
-                if (RocketEntity.RocketRigidbody.velocity.y > TargetVerticalSpeedTolerance)
+                if (RocketEntity.RocketRigidbody.velocity.y > LearningParams.TargetVerticalSpeedTolerance)
                 {
                     if (fixedRotationZ < angleTo && gimbalResponse > 0 || fixedRotationZ > angleTo && gimbalResponse < 0)
                     {
@@ -139,7 +130,7 @@ public class RocketAgent : Agent
                     }
                 }
                 // If rocket is falling faster than vertical speed tolerance
-                else if (RocketEntity.RocketRigidbody.velocity.y < -TargetVerticalSpeedTolerance)
+                else if (RocketEntity.RocketRigidbody.velocity.y < -LearningParams.TargetVerticalSpeedTolerance)
                 {
                     if (fixedRotationZ < angleFrom && gimbalResponse > 0 || fixedRotationZ > angleFrom && gimbalResponse < 0)
                     {
@@ -150,18 +141,18 @@ public class RocketAgent : Agent
                 else
                 {
                     // Reward agent if thrust is throttled
-                    if (thrustResponse >= MinThrustDuringStabilizing)
+                    if (thrustResponse >= LearningParams.MinThrustDuringStabilizing)
                     {
                         AddReward(0.4f);
                     }
                 }
             }
             // If rocket is within desired speed range
-            else if (RocketEntity.RocketRigidbody.velocity.x >= RocketEntity.WorldParams.OrbitalSpeed - TargetHorizontalSpeedTolerance &&
-                     RocketEntity.RocketRigidbody.velocity.x <= RocketEntity.WorldParams.OrbitalSpeed + TargetHorizontalSpeedTolerance)
+            else if (RocketEntity.RocketRigidbody.velocity.x >= RocketEntity.WorldParams.OrbitalSpeed - LearningParams.TargetHorizontalSpeedTolerance &&
+                     RocketEntity.RocketRigidbody.velocity.x <= RocketEntity.WorldParams.OrbitalSpeed + LearningParams.TargetHorizontalSpeedTolerance)
             {
                 // Reward agent if he stopped engine (because we don't need more speed)
-                if (thrustResponse <= MaxThrustAfterStabilization)
+                if (thrustResponse <= LearningParams.MaxThrustAfterStabilization)
                 {
                     AddReward(0.6f);
                     Done();
@@ -178,7 +169,7 @@ public class RocketAgent : Agent
             Done();
         }
 
-        if (RocketEntity.transform.position.y <= RocketEntity.WorldParams.ZeroDragAltitude && Mathf.Abs(fixedAngleOfAttack) > AngleOfAttackTolerance)
+        if (RocketEntity.transform.position.y <= RocketEntity.WorldParams.ZeroDragAltitude && Mathf.Abs(fixedAngleOfAttack) > LearningParams.AngleOfAttackTolerance)
         {
             // Punish agent if he doesn't try to decrease angle of attack
             if (fixedAngleOfAttack > 0 && gimbalResponse > 0 || fixedAngleOfAttack < 0 && gimbalResponse < 0)
@@ -187,7 +178,7 @@ public class RocketAgent : Agent
             }
 
             // Rocket has exceeded max angle of attack, so end this episode
-            if (Mathf.Abs(fixedAngleOfAttack) >= MaxAngleOfAttack)
+            if (Mathf.Abs(fixedAngleOfAttack) >= LearningParams.MaxAngleOfAttack)
             {
                 Done();
             }
@@ -244,7 +235,7 @@ public class RocketAgent : Agent
 
     private void RandomizeTargetAltitude()
     {
-        TargetAltitude = Random.Range(RocketEntity.WorldParams.ZeroDragAltitude + TargetAltitudeTolerance, RocketEntity.RocketParams.MaxOperationalAltitude - TargetAltitudeTolerance);
+        TargetAltitude = Random.Range(RocketEntity.WorldParams.ZeroDragAltitude + LearningParams.TargetAltitudeTolerance, RocketEntity.RocketParams.MaxOperationalAltitude - LearningParams.TargetAltitudeTolerance);
     }
 
     private float NormalizeValue(float value, float minValue, float maxValue)
