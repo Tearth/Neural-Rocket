@@ -31,11 +31,10 @@ public class RocketAgent : Agent
          * I0 - altitude - from 0 to MaxOperationalAltitude
          * I1 - target altitude - from 0 to MaxOperationalAltitude
          * I2 - x speed - from -OrbitalSpeed * 2 to OrbitalSpeed * 2
-         * I3 - target x speed - from -OrbitalSpeed * 2 to OrbitalSpeed * 2
-         * I4 - y speed - from -OrbitalSpeed to OrbitalSpeed
-         * I5 - z rotation - from -180 to 180 degrees
-         * I6 - angle of attack - from -90 to 90 degrees
-         * I7 - z rotation speed - from -PI/2 to PI/2
+         * I3 - y speed - from -OrbitalSpeed to OrbitalSpeed
+         * I4 - z rotation - from -180 to 180 degrees
+         * I5 - angle of attack - from -90 to 90 degrees
+         * I6 - z rotation speed - from -PI/2 to PI/2
          */
 
         // I0
@@ -51,14 +50,10 @@ public class RocketAgent : Agent
         AddVectorObs(xSpeedNormalized);
 
         // I3
-        var xSpeedTargetNormalized = NormalizeValue(RocketEntity.WorldParams.OrbitalSpeed, -RocketEntity.WorldParams.OrbitalSpeed * 2, RocketEntity.WorldParams.OrbitalSpeed * 2);
-        AddVectorObs(xSpeedTargetNormalized);
-
-        // I4
         var ySpeedNormalized = NormalizeValue(RocketEntity.RocketRigidbody.velocity.y, -RocketEntity.WorldParams.OrbitalSpeed, RocketEntity.WorldParams.OrbitalSpeed);
         AddVectorObs(ySpeedNormalized);
 
-        // I5
+        // I4
         var rotation = RocketEntity.RocketRigidbody.rotation.eulerAngles;
         var normalizedRotation = new Vector3(
             rotation.x < 180 ? rotation.x : rotation.x - 360,
@@ -68,18 +63,17 @@ public class RocketAgent : Agent
         var zRotationNormalized = NormalizeValue(normalizedRotation.z, -180, 180);
         AddVectorObs(zRotationNormalized);
 
-        // I6
+        // I5
         var zRotationSpeedNormalized = NormalizeValue(RocketEntity.RocketRigidbody.angularVelocity.z, (float)-Math.PI / 2, (float)Math.PI / 2);
         AddVectorObs(zRotationSpeedNormalized);
 
-        // I7
+        // I6
         var angleOfAttackNormalized = NormalizeValue(RocketEntity.AngleOfAttack, -90, 90);
         AddVectorObs(angleOfAttackNormalized);
 
         /*Debug.Log($"Alt: {altitudeNormalized:0.000}, " +
                   $"TAlt: {targetAltitudeNormalized:0.000}, " +
                   $"XSpeed: {xSpeedNormalized:0.000}, " +
-                  $"XSpeedTarget: {xSpeedTargetNormalized:0.000}, " +
                   $"YSpeed: {ySpeedNormalized:0.000}, " +
                   $"ZRot: {zRotationNormalized:0.000}, " +
                   $"ZRotSpeed: {zRotationSpeedNormalized:0.000}, " +
@@ -103,7 +97,7 @@ public class RocketAgent : Agent
         if (RocketEntity.transform.position.y < TargetAltitude - TargetAltitudeTolerance)
         {
             var angleRange = 20f;
-            var altitudeAngleRatio = Mathf.Sqrt(Mathf.Clamp(RocketEntity.transform.position.y / TargetAltitude, 0, 1));
+            var altitudeAngleRatio = Mathf.Sqrt(Mathf.Clamp(RocketEntity.transform.position.y / TargetAltitude, 0, 1 - angleRange / 90));
             var angleFrom = -90 * altitudeAngleRatio;
             var angleTo = angleFrom - angleRange;
 
@@ -167,6 +161,11 @@ public class RocketAgent : Agent
                 if (thrustResponse <= 10)
                 {
                     AddReward(0.6f);
+                    Done();
+                }
+                else
+                {
+                    AddReward(-0.6f);
                 }
             }
         }
@@ -176,7 +175,7 @@ public class RocketAgent : Agent
             Done();
         }
 
-        if (Mathf.Abs(RocketEntity.AngleOfAttack) > AngleOfAttackTolerance)
+        if (RocketEntity.transform.position.y <= RocketEntity.WorldParams.ZeroDragAltitude && Mathf.Abs(RocketEntity.AngleOfAttack) > AngleOfAttackTolerance)
         {
             // Punish agent if he doesn't try to decrease angle of attack
             if (RocketEntity.AngleOfAttack > 0 && gimbalResponse > 0 || RocketEntity.AngleOfAttack < 0 && gimbalResponse < 0)
