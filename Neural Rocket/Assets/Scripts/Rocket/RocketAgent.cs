@@ -92,7 +92,7 @@ public class RocketAgent : Agent
         if (RocketEntity.transform.position.y < TargetAltitude - LearningParams.TargetAltitudeTolerance)
         {
             var angleRange = LearningParams.AngleRangeDuringAscending;
-            var altitudeAngleRatio = Mathf.Sqrt(Mathf.Clamp(RocketEntity.transform.position.y / TargetAltitude, 0, 1 - angleRange / 90));
+            var altitudeAngleRatio = Mathf.Clamp(Mathf.Sqrt(RocketEntity.transform.position.y / TargetAltitude), 0, 1 - angleRange / 90);
             var angleFrom = -90 * altitudeAngleRatio;
             var angleTo = angleFrom - angleRange;
 
