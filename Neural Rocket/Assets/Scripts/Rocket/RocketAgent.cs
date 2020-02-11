@@ -105,13 +105,18 @@ public class RocketAgent : Agent
             {
                 if (thrustResponse >= RocketEntity.RocketParams.MinThrustPercentage)
                 {
-                    AddReward(0.3f);
+                    AddReward(0.5f);
                 }
             }
             // Punish agent if he doesn't try to fix its rotation using gimbal
             else if (fixedRotationZ > angleFrom && gimbalResponse <= 0 || fixedRotationZ < angleTo && gimbalResponse >= 0)
             {
                 AddReward(-0.2f);
+
+                if (thrustResponse < RocketEntity.RocketParams.MinThrustPercentage)
+                {
+                    AddReward(-0.2f);
+                }
             }
 
             if (_orbitTimer.IsRunning)
@@ -135,7 +140,12 @@ public class RocketAgent : Agent
                 {
                     if (fixedRotationZ < angleTo && gimbalResponse > 0 || fixedRotationZ > angleTo && gimbalResponse < 0)
                     {
-                        AddReward(-0.3f);
+                        AddReward(-0.2f);
+
+                        if (thrustResponse < RocketEntity.RocketParams.MinThrustPercentage)
+                        {
+                            AddReward(-0.2f);
+                        }
                     }
                 }
                 // If rocket is falling faster than vertical speed tolerance
@@ -143,16 +153,20 @@ public class RocketAgent : Agent
                 {
                     if (fixedRotationZ < angleFrom && gimbalResponse > 0 || fixedRotationZ > angleFrom && gimbalResponse < 0)
                     {
-                        AddReward(-0.3f);
+                        AddReward(-0.2f);
+
+                        if (thrustResponse < RocketEntity.RocketParams.MinThrustPercentage)
+                        {
+                            AddReward(-0.2f);
+                        }
                     }
                 }
-                // If rocket is within desired vertical speed range
                 else
                 {
-                    // Reward agent if thrust is throttled
+                    // Reward agent if the engine is activated
                     if (thrustResponse >= RocketEntity.RocketParams.MinThrustPercentage)
                     {
-                        AddReward(0.4f);
+                        AddReward(0.5f);
                     }
                 }
             }

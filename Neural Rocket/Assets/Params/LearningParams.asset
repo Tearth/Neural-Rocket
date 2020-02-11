@@ -19,4 +19,4 @@ MonoBehaviour:
   MaxAngleOfAttack: 90
   AngleRangeDuringAscending: 20
   AngleRangeDuringStabilizing: 10
-  MillisecondsOnOrbitToFinish: 3000
+  MillisecondsOnOrbitToFinish: 2000
