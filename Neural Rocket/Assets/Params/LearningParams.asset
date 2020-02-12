@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7087809e668f647a5bed4688e85e21, type: 3}
   m_Name: LearningParams
   m_EditorClassIdentifier: 
-  TargetAltitudeTolerance: 1000
+  TargetAltitudeTolerance: 2000
   TargetHorizontalSpeedTolerance: 200
   TargetVerticalSpeedTolerance: 10
   AngleOfAttackTolerance: 10
-  MaxAngleOfAttack: 90
-  AngleRangeDuringAscending: 20
-  AngleRangeDuringStabilizing: 10
-  MillisecondsOnOrbitToFinish: 2000
+  MaxAngleOfAttack: 45
+  AngleRangeDuringAscending: 10
+  AngleRangeDuringStabilizing: 20
+  MillisecondsOnOrbitToFinish: 5000
