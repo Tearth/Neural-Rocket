@@ -118,11 +118,6 @@ public class RocketAgent : Agent
                     AddReward(-0.2f);
                 }
             }
-
-            if (_orbitTimer.IsRunning)
-            {
-                _orbitTimer.Stop();
-            }
         }
         // If rocket is within desired altitude range
         else if (RocketEntity.transform.position.y >= TargetAltitude - LearningParams.TargetAltitudeTolerance &&
@@ -175,24 +170,16 @@ public class RocketAgent : Agent
                      RocketEntity.RocketRigidbody.velocity.x <= RocketEntity.WorldParams.OrbitalSpeed + LearningParams.TargetHorizontalSpeedTolerance)
             {
                 // Reward agent if he stopped engine (because we don't need more speed)
-                if (thrustResponse <= RocketEntity.RocketParams.MinThrustPercentage)
+                if (thrustResponse < RocketEntity.RocketParams.MinThrustPercentage)
                 {
                     AddReward(0.6f);
                 }
-                else
-                {
-                    AddReward(-0.6f);
-                }
+            }
 
-                if (!_orbitTimer.IsRunning)
-                {
-                    _orbitTimer.Start();
-                }
-
-                if (_orbitTimer.Elapsed.TotalMilliseconds >= LearningParams.MillisecondsOnOrbitToFinish)
-                {
-                    Done();
-                }
+            // Start timer (protects against infinite flight)
+            if (!_orbitTimer.IsRunning)
+            {
+                _orbitTimer.Start();
             }
         }
         // End episode if rocket is too high
@@ -214,6 +201,12 @@ public class RocketAgent : Agent
             {
                 Done();
             }
+        }
+
+        // End this episode if rocket is flying too long
+        if (_orbitTimer.Elapsed.TotalMilliseconds >= LearningParams.MillisecondsOnOrbitToFinish)
+        {
+            Done();
         }
 
         // Rocket is marked as destroyed, so end this episode
