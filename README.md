@@ -1,7 +1,7 @@
 # Neural Rocket
 This project is an experiment to see if a neural network can be taught to launch space rockets. For this purpose, I used [Unity](https://unity.com/) (for visualisation) and [ML-Agents](https://github.com/Unity-Technologies/ml-agents) library (for neural network things).
 
-Neural network used in this projects contains 4 layers, described below.
+Neural network used in this project contains 4 layers, described below.
 
 #### Input layer
 *every value is normalized to [-1..1] range*
@@ -31,4 +31,29 @@ where default values are:
 where default values are:
  - **MaxGimbal** = 15 degrees
 
-![test](./Media/neuralrocket1.gif)
+## Development history
+The first attempts to implement this problem were highly unsatisfactory - the neural network was unable to maintain constant course and the rocket was falling in the first seconds of flight.
+
+![Neural rocket 1](./Media/neuralrocket1.gif)
+
+Because it looked like the complexity of task was too high for neural network, then I decided to simplify the problem by reducing available axes. Now rocket could move only in X and Y axis - it applied also to rotation where only Z axis was available.
+
+![Neural rocket 2](./Media/neuralrocket2.gif)
+
+Now flight has started to look better, but it was still very bumpy, and what more important, rocked didn't gain horizontal speed which is necessary to fly into orbit. It was also frequent when a small change in rewards system lead to strange results like this below (proudly called "rocket bunnies").
+
+![Neural rocket 3](./Media/neuralrocket3.gif)
+
+![Neural rocket 4](./Media/neuralrocket4.gif)
+
+Refactoring of the rewards system, where the rocket began to be awarded for the last response (gimbal and thrust) rather than previous achievements made rocket finally learning proper flying. It was still quite bumpy, but its course was generally valid.
+
+![Neural rocket 5](./Media/neuralrocket5.gif)
+
+After a series of small adjustments and 100 learning sessions, the rocket started flying validly.
+
+![Neural rocket 8](./Media/neuralrocket8.gif)
+
+Typical learning session takes about 2, 3 hours and 600000 steps. After this point, the neural network doesn't improve its mean reward and episode length.
+
+![Tensorboard](./Media/tensorboard.png)
