@@ -1,7 +1,7 @@
 # Neural Rocket
-This project is an experiment to see if a neural network can be taught to launch space rockets. For this purpose, I used [Unity](https://unity.com/) (for visualisation) and [ML-Agents](https://github.com/Unity-Technologies/ml-agents) library (for neural network things).
+This project is an experiment to see if a neural network can be taught to launch space rockets. For this purpose, I used [Unity](https://unity.com/) (for visualization) and [ML-Agents](https://github.com/Unity-Technologies/ml-agents) library (for neural network things). The main class where you can find the implementation of a rewards system can be found [here](https://github.com/Tearth/Neural-Rocket/blob/master/Neural%20Rocket/Assets/Scripts/Rocket/RocketAgent.cs).
 
-Neural network used in this project contains 4 layers, described below.
+The neural network used in this project contains 4 layers, described below.
 
 #### Input layer
 *every value is normalized to [-1..1] range*
@@ -36,11 +36,11 @@ The first attempts to implement this problem were highly unsatisfactory - the ne
 
 ![Neural rocket 1](./Media/neuralrocket1.gif)
 
-Because it looked like the complexity of task was too high for neural network, then I decided to simplify the problem by reducing available axes. Now rocket could move only in X and Y axis - it applied also to rotation where only Z axis was available.
+Because it looked like the complexity of task was too high for the neural network, then I decided to simplify the problem by reducing available axes. Now rocket could move only in X and Y axis - this also applied to the rotation where only Z axis was available.
 
 ![Neural rocket 2](./Media/neuralrocket2.gif)
 
-Now flight has started to look better, but it was still very bumpy, and what more important, rocked didn't gain horizontal speed which is necessary to fly into orbit. It was also frequent when a small change in rewards system lead to strange results like this below (proudly called "rocket bunnies").
+Now flight has started to look better, but it was still very bumpy, and what more important, rocked didn't gain horizontal speed which is necessary to fly into orbit. It was also frequent when a small change in the rewards system lead to strange results like this below (proudly called "rocket bunnies").
 
 ![Neural rocket 3](./Media/neuralrocket3.gif)
 
